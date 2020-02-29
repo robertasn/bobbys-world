@@ -5,6 +5,9 @@ function Array_Generator() {
 	this.frontierSiz = 0;
 	this.dx = [1, -1, 0, 0];
 	this.dy = [0, 0, 1, -1];
+	this.arr = [[]];
+	this.startX = 0;
+	this.startY = 0;
 
 	this.valid = function(x, y) {
 		if (x >= 1 && x < this.n - 1 && y >= 1 && y < this.n - 1) {
@@ -41,11 +44,10 @@ function Array_Generator() {
 			}
 		}
 
-		var startX = 1;
-		var startY = Math.floor(Math.random() * (this.n - 1)) + 1;
+		this.startX = 1;
+		this.startY = Math.floor(Math.random() * (this.n - 1)) + 1;
 
-		this.frontier[this.frontierSiz++] = [startX, startY, startX, startY];
-		// console.log(startX + " " + startY);
+		this.frontier[this.frontierSiz++] = [this.startX, this.startY, this.startX, this.startY];
 
 		while (this.frontierSiz > 0) {
 			var index = Math.floor(Math.random() * this.frontierSiz);
@@ -108,21 +110,6 @@ function Array_Generator() {
 
 		endY = endLocs[Math.floor(Math.random() * cu)];
 
-		// for (var i = 0; i < this.n; i++) {
-		// 	var row = "";
-		// 	row += (i % 10) + " ";
-		// 	for (var j = 0; j < this.n; j++) {
-		// 		if (i == startX && j == startY) {
-		// 			row += "S ";
-		// 		} else if (i == endX && j == endY) {
-		// 			row += "E ";
-		// 		} else {
-		// 			row += (this.cells[this.getID(i, j)] == 1 ? "." : "#") + " ";
-		// 		}
-		// 	}
-		// 	console.log(row);
-		// }
-
 		arr = [[]];
 		for (var i = 0; i < this.n; i++) {
 			arr[i] = [];
@@ -133,7 +120,7 @@ function Array_Generator() {
 					if (this.cells[this.getID(i, j)] == 1) {
 						if (i == endX && j == endY) {
 							arr[i][j] = 2; // ending cell
-						} else if (i == startX && j == startY) {
+						} else if (i == this.startX && j == this.startY) {
 							arr[i][j] = 5;
 						} else if (Math.random() * 10 > 9) {
 							arr[i][j] = 3; // coin
@@ -151,7 +138,7 @@ function Array_Generator() {
 			}
 		}
 
-		return arr;
+		this.arr = arr;
 	}
 
 	// only use with odd maze sizes

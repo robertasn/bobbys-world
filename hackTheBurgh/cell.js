@@ -62,8 +62,8 @@ function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start){
   } else if (this.has_shop) {
     shop = new Shop(this.pos_x, this.pos_y, this.resolution);
     shop.display();
-  } else if (this.is_start) { 
-    
+  } else if (this.is_start) {
+
   }
   noFill();
 }
