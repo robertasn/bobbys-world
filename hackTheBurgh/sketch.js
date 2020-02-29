@@ -3,7 +3,7 @@
 let a = 0;
 canvas_width = 800
 canvas_height= 800
-resolution = 20
+resolution = 50
 cell_array = []
 
 function setup() {
@@ -48,25 +48,32 @@ function setup() {
 
 
 function draw() {
-  player.move(20,20);
+  background(100);
+  for(i=0; i<cell_number; i++){
+    for(j=0; j<cell_number; j++){
+      cell_new = Cell(i,j,resolution,input_array[i][j]);
+      cell_array.push(cell_new);
+    }
+  }
+  // player.show(20,20);
   player.show();
 
 }
 
-function keyReleased() {
-  player.setRotation(0);
-  player.boosting(false);
-}
+// function keyReleased() {
+//   player.setRotation(0);
+//   player.boosting(false);
+// }
 
 function keyPressed() {
-  if (key == ' ') {
-    // Do nothing
-  } else if (keyCode == RIGHT_ARROW) {
-    player.setRotation(0.1);
+  if (keyCode == RIGHT_ARROW) {
+    player.update_movement(3);
   } else if (keyCode == LEFT_ARROW) {
-    player.setRotation(-0.1);
+    player.update_movement(4);
   } else if (keyCode == UP_ARROW) {
-    player.boosting(true);
+    player.update_movement(1);
+  } else if (keyCode == DOWN_ARROW) {
+    player.update_movement(2);
   }
 }
 
