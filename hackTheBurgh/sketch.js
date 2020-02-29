@@ -1,23 +1,21 @@
 
 
 let a = 0;
-canvas_width = 800
-canvas_height= 800
-resolution = 50
+canvas_size = 550
+offset = 5;
+resolution = canvas_size / (offset * 2 + 1)
 cell_array = []
 
 function setup() {
-  createCanvas(canvas_width,canvas_height);
+  createCanvas(canvas_size, canvas_size);
   background(100);
-  cols = floor(canvas_width/resolution);
-	rows = floor(canvas_height/ resolution);
-  cell_number = floor(canvas_width/resolution);
+  dimension = 10
 
 
   // -- Input array  example
-  input_array = new Array(rows);
-  for(i=0; i<rows; i++){
-    input_array[i] = new Array(cols);
+  input_array = new Array(dimension);
+  for(i=0; i<dimension; i++){
+    input_array[i] = new Array(dimension);
   }
   // populating the array
   for(i=0;i<input_array.length;i++){
@@ -32,56 +30,56 @@ function setup() {
   // console.log(input_array);
   // -- -- -- -- -- -- -- -- -- --
 
-  // creating the map
-  for(i=0; i<cell_number; i++){
-    for(j=0; j<cell_number; j++){
-      cell_new = Cell(i,j,resolution,input_array[i][j]);
-      cell_array.push(cell_new);
-    }
-  }
-
-  // adding the player
-  player = new Player(10,10,resolution);
-  // player.show();
+  player = new Player(canvas_size/2, canvas_size/2, dimension);
 }
 
 
 
 function draw() {
   background(100);
-  for(i=0; i<cell_number; i++){
-    for(j=0; j<cell_number; j++){
-      cell_new = Cell(i,j,resolution,input_array[i][j]);
+
+  x = player.pos_xx - offset;
+  y = player.pos_yy - offset;
+  console.log(x, y);
+  for (var i = 0; i < offset*2 + 1; i++) {
+    for (var j = 0; j < offset*2 + 1; j++) {
+      if ((x + i < 0) || (x + i >= dimension) || (y + j < 0) || (y + j >= dimension)) {
+        cell_new = Cell(i,j,resolution,true);
+      }
+      else {
+        cell_new = Cell(i,j,resolution,input_array[x + i][y + j]);
+      }
       cell_array.push(cell_new);
     }
   }
-  // player.show(20,20);
   player.show();
-
 }
-
-// function keyReleased() {
-//   player.setRotation(0);
-//   player.boosting(false);
-// }
 
 function keyPressed() {
-  if (keyCode == RIGHT_ARROW) {
-    player.update_movement(3);
-  } else if (keyCode == LEFT_ARROW) {
-    player.update_movement(4);
-  } else if (keyCode == UP_ARROW) {
-    player.update_movement(1);
-  } else if (keyCode == DOWN_ARROW) {
-    player.update_movement(2);
-  }
-}
-
-// draw with lines
-function draw_resolution(){
-  stroke(0)
-  for (i = 0; i < cells; i++) {
-    line(i*resolution,0,i*resolution,0+canvas_height);
-    line(0,i*resolution,i+canvas_width,i*resolution);
+  switch(keyCode) {
+    case UP_ARROW:   //up
+      this.player.set_oriention(1);
+      if (!input_array[this.player.pos_xx][this.player.pos_yy - 1]) {
+        this.player.pos_yy--;
+      }
+      break;//
+    case DOWN_ARROW:   // down
+      this.player.set_oriention(2);
+      if (!input_array[this.player.pos_xx][this.player.pos_yy + 1]) {
+        this.player.pos_yy++;
+      }
+      break;
+    case RIGHT_ARROW:   // right
+      this.player.set_oriention(3);
+      if (!input_array[this.player.pos_xx + 1][this.player.pos_yy]) {
+        this.player.pos_xx++;
+      }
+      break;
+    case LEFT_ARROW:   // left
+      this.player.set_oriention(4);
+      if (!input_array[this.player.pos_xx - 1][this.player.pos_yy]) {
+        this.player.pos_xx--;
+      }
+      break;
   }
 }
