@@ -1,8 +1,7 @@
-
-function Coin(x, y) {
+function Coin(x, y, resolution) {
   this.x = x;
   this.y = y;
-  this.radius = 15;
+  this.radius = resolution / 2;
   this.display = function() {
     fill(255, 255, 0);
     circle(x, y, this.radius);
@@ -54,7 +53,7 @@ function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start){
   }
   rect(this.pos_x,this.pos_y,this.pos_x + this.resolution,this.pos_y + this.resolution);
   if (this.has_coin) {
-    coin = new Coin(this.pos_x + this.resolution / 2, this.pos_y + this.resolution / 2);
+    coin = new Coin(this.pos_x + this.resolution / 2, this.pos_y + this.resolution / 2, resolution);
     coin.display();
   } else if (this.is_end) {
     end = new End(this.pos_x, this.pos_y, this.resolution);

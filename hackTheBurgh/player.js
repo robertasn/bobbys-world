@@ -1,20 +1,29 @@
 
 
-function Player(x,y, dimension){
+function Player(x,y, dimension, resolution){
 
   // actual pixel position
   this.pos_x = x;
   this.pos_y = y;
+  this.o_pos_x = x;
+  this.o_pos_y = y;
+  this.o_pos_xx = x;
+  this.o_pos_yy = y;
+  this.center = false;
+  this.dimension = dimension;
+  this.resolution = resolution;
   //movement
   this.vel = 0;
   this.orientation = 4;
   // trinagle positions default
-  this.x1 = this.pos_x-5;
-  this.y1 = this.pos_y+10;
+  this.small = this.resolution / 4 / 1.5;
+  this.big = this.resolution / 3 / 1.5;
+  this.x1 = this.pos_x-this.small;
+  this.y1 = this.pos_y+this.big;
   this.x2 = this.pos_x;
-  this.y2 = this.pos_y-10;
-  this.x3 = this.pos_x+5;
-  this.y3 = this.pos_y+10;
+  this.y2 = this.pos_y-this.big;
+  this.x3 = this.pos_x+this.small;
+  this.y3 = this.pos_y+this.big;
   this.figure = triangle(this.x1,this.y1,this.x2,this.y2,this.x3,this.y3);
 
   this.pos_xx = 0;
@@ -35,53 +44,69 @@ function Player(x,y, dimension){
     }
   }
 
-  // movement
-  this._move = function(type){
+  this.toggleCenter = function(resolution) {
+    if(this.center) {
+      this.pos_xx = this.o_pos_xx;
+      this.pos_yy = this.o_pos_yy;
+      this.pos_x = this.o_pos_x;
+      this.pos_y = this.o_pos_y;
+    }
+    else {
+      this.o_pos_xx = this.pos_xx;
+      this.o_pos_yy = this.pos_yy;
+      this.pos_x = this.pos_xx * resolution + resolution / 2;
+      this.pos_y = this.pos_yy * resolution + resolution / 2;
+      this.pos_xx = (dimension - 1) / 2;
+      this.pos_yy = (dimension - 1) / 2;
 
+    }
+    this.small = resolution / 4 / 1.5;
+    this.big = resolution / 2 / 1.5;
+    this.center = !this.center;
   }
 
   // draw player
   this.draw_player = function(){
     switch(this.orientation){
       case 1: // facing up
-        this.x1 = this.pos_x-5;
-        this.y1 = this.pos_y+10;
+        this.x1 = this.pos_x-this.small;
+        this.y1 = this.pos_y+this.big;
         this.x2 = this.pos_x;
-        this.y2 = this.pos_y-10;
-        this.x3 = this.pos_x+5;
-        this.y3 = this.pos_y+10;
+        this.y2 = this.pos_y-this.big;
+        this.x3 = this.pos_x+this.small;
+        this.y3 = this.pos_y+this.big;
         break;
       case 2: // facing down
-        this.x1 = this.pos_x-5;
-        this.y1 = this.pos_y-10;
+        this.x1 = this.pos_x-this.small;
+        this.y1 = this.pos_y-this.big;
         this.x2 = this.pos_x;
-        this.y2 = this.pos_y+10;
-        this.x3 = this.pos_x+5;
-        this.y3 = this.pos_y-10;
+        this.y2 = this.pos_y+this.big;
+        this.x3 = this.pos_x+this.small;
+        this.y3 = this.pos_y-this.big;
         break;
       case 3: // facing right
-        this.x1 = this.pos_x-10;
-        this.y1 = this.pos_y+5;
-        this.x2 = this.pos_x-10;
-        this.y2 = this.pos_y-5;
-        this.x3 = this.pos_x+10;
+        this.x1 = this.pos_x-this.big;
+        this.y1 = this.pos_y+this.small;
+        this.x2 = this.pos_x-this.big;
+        this.y2 = this.pos_y-this.small;
+        this.x3 = this.pos_x+this.big;
         this.y3 = this.pos_y;
         break;
       case 4: // facing left
-        this.x1 = this.pos_x-10;
+        this.x1 = this.pos_x-this.big;
         this.y1 = this.pos_y;
-        this.x2 = this.pos_x+10;
-        this.y2 = this.pos_y-5;
-        this.x3 = this.pos_x+10;
-        this.y3 = this.pos_y+5;
+        this.x2 = this.pos_x+this.big;
+        this.y2 = this.pos_y-this.small;
+        this.x3 = this.pos_x+this.big;
+        this.y3 = this.pos_y+this.small;
         break;
       default: // facing up
-      this.x1 = this.pos_x-5;
-      this.y1 = this.pos_y+10;
+      this.x1 = this.pos_x-this.small;
+      this.y1 = this.pos_y+this.big;
       this.x2 = this.pos_x;
-      this.y2 = this.pos_y-10;
-      this.x3 = this.pos_x+5;
-      this.y3 = this.pos_y+10;
+      this.y2 = this.pos_y-this.big;
+      this.x3 = this.pos_x+this.small;
+      this.y3 = this.pos_y+this.big;
       break;
     }
     fill(255,50,50,150);
