@@ -1,9 +1,9 @@
 
 
 let a = 0;
-canvas_width = 800
-canvas_height= 800
-resolution = 50
+canvas_width = 20 * 37
+canvas_height= 20 * 37
+resolution = 20
 cell_array = []
 
 function setup() {
@@ -15,27 +15,35 @@ function setup() {
 
 
   // -- Input array  example
-  input_array = new Array(rows);
-  for(i=0; i<rows; i++){
-    input_array[i] = new Array(cols);
-  }
-  // populating the array
-  for(i=0;i<input_array.length;i++){
-    for(j=0;j<input_array[i].length;j++){
-      if(j%4==0){
-        input_array[i][j]=false;
-      }else {
-        input_array[i][j]=true;
-      }
-    }
-  }
+  input_array = new Array_Generator().generate(rows);
+  
+  // input_array = new Array(rows);
+  // for(i=0; i<rows; i++){
+  //   input_array[i] = new Array(cols);
+  // }
+  // // populating the array
+  // for(i=0;i<input_array.length;i++){
+  //   for(j=0;j<input_array[i].length;j++){
+  //     if(j%4==0){
+  //       input_array[i][j]=false;
+  //     }else {
+  //       input_array[i][j]=true;
+  //     }
+  //   }
+  // }
   // console.log(input_array);
   // -- -- -- -- -- -- -- -- -- --
 
   // creating the map
   for(i=0; i<cell_number; i++){
     for(j=0; j<cell_number; j++){
-      cell_new = Cell(i,j,resolution,input_array[i][j]);
+
+      var is_obstacle = !(input_array[i][j] >= 1 && input_array[i][j] <= 3);
+      var has_shop = (input_array[i][j] == 4);
+      var has_coin = (input_array[i][j] == 3);
+      var is_end = (input_array[i][j] == 2);
+      var is_start = (input_array[i][j] == 5); 
+      cell_new = Cell(i,j,resolution,is_obstacle, has_coin, has_shop, is_end, is_start);
       cell_array.push(cell_new);
     }
   }
@@ -48,32 +56,25 @@ function setup() {
 
 
 function draw() {
-  background(100);
-  for(i=0; i<cell_number; i++){
-    for(j=0; j<cell_number; j++){
-      cell_new = Cell(i,j,resolution,input_array[i][j]);
-      cell_array.push(cell_new);
-    }
-  }
-  // player.show(20,20);
+  player.move(20,20);
   player.show();
 
 }
 
-// function keyReleased() {
-//   player.setRotation(0);
-//   player.boosting(false);
-// }
+function keyReleased() {
+  player.setRotation(0);
+  player.boosting(false);
+}
 
 function keyPressed() {
-  if (keyCode == RIGHT_ARROW) {
-    player.update_movement(3);
+  if (key == ' ') {
+    // Do nothing
+  } else if (keyCode == RIGHT_ARROW) {
+    player.setRotation(0.1);
   } else if (keyCode == LEFT_ARROW) {
-    player.update_movement(4);
+    player.setRotation(-0.1);
   } else if (keyCode == UP_ARROW) {
-    player.update_movement(1);
-  } else if (keyCode == DOWN_ARROW) {
-    player.update_movement(2);
+    player.boosting(true);
   }
 }
 
