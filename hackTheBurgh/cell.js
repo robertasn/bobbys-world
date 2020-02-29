@@ -31,7 +31,7 @@ function End(x, y, res) {
   }
 }
 
-function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start){
+function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start, is_visible){
   // initioalize variables
   this.resolution = res;
   this.pos_x = x*this.resolution;
@@ -41,28 +41,35 @@ function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start){
   this.has_shop = has_shop;
   this.is_end = is_end;
   this.is_start = is_start;
+  this.is_visible = (is_visible);
 
   // console.log(this.pos_x, this.pos_y, this.resolution,this.resolution)
   // make the square
-  if(this.is_obstacle){ // obstacle color
-    stroke(0,0,0);
-    fill(100,100,100);
+  if (!this.is_visible) {
+    stroke(0, 0, 0);
+    fill(0, 0, 0);
+    rect(this.pos_x,this.pos_y,this.pos_x + this.resolution,this.pos_y + this.resolution);
   } else {
-    stroke(0,0,0);
-    fill(255,255,255);
-  }
-  rect(this.pos_x,this.pos_y,this.pos_x + this.resolution,this.pos_y + this.resolution);
-  if (this.has_coin) {
-    coin = new Coin(this.pos_x + this.resolution / 2, this.pos_y + this.resolution / 2, resolution);
-    coin.display();
-  } else if (this.is_end) {
-    end = new End(this.pos_x, this.pos_y, this.resolution);
-    end.display();
-  } else if (this.has_shop) {
-    shop = new Shop(this.pos_x, this.pos_y, this.resolution);
-    shop.display();
-  } else if (this.is_start) {
+    if(this.is_obstacle){ // obstacle color
+      stroke(0,0,0);
+      fill(100,100,100);
+    } else {
+      stroke(0,0,0);
+      fill(255,255,255);
+    }
+    rect(this.pos_x,this.pos_y,this.pos_x + this.resolution,this.pos_y + this.resolution);
+    if (this.has_coin) {
+      coin = new Coin(this.pos_x + this.resolution / 2, this.pos_y + this.resolution / 2, resolution);
+      coin.display();
+    } else if (this.is_end) {
+      end = new End(this.pos_x, this.pos_y, this.resolution);
+      end.display();
+    } else if (this.has_shop) {
+      shop = new Shop(this.pos_x, this.pos_y, this.resolution);
+      shop.display();
+    } else if (this.is_start) {
 
+    }
   }
   noFill();
 }
