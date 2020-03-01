@@ -14,9 +14,9 @@ function won() {
 
 var s1 = function (sketch) {
   let a = 0;
-  visibility = 4;
-  offset = 4;
-  dimension = 7;
+  visibility = 6;
+  offset = 6;
+  dimension = 11;
   canvas_size = 400
   resolution = canvas_size / (offset * 2 + 1)
   cell_array = []
@@ -129,7 +129,7 @@ var s1 = function (sketch) {
           } else {
             is_visible = was_visited[xi][yj];
           }
-          cell_new = Cell(i,j,resolution,this.isObstacle(xi, yj), has_coin, has_shop, is_end, is_start, is_visible, sketch);
+          cell_new = Cell(i,j,resolution,this.isObstacle(xi, yj), has_coin, has_shop, is_end, is_start, is_visible, sketch, this.determineType(xi, yj));
         }
         cell_array.push(cell_new);
       }
@@ -242,7 +242,55 @@ var s1 = function (sketch) {
     }
   }
 
+  this.determineType = function(xi, yj) {
+    if (!this.isObstacle(xi, yj-1) && !this.isObstacle(xi, yj+1) && this.isObstacle(xi-1, yj) && this.isObstacle(xi+1, yj)) {
+      return 1;
+    }
+    else if (this.isObstacle(xi,yj-1) && this.isObstacle(xi,yj+1) && !this.isObstacle(xi-1,yj) && !this.isObstacle(xi+1,yj)) {
+      return 2;
+    }
+    else if (this.isObstacle(xi,yj-1) && !this.isObstacle(xi,yj+1) && this.isObstacle(xi-1,yj) && !this.isObstacle(xi+1,yj)) {
+      return 3;
+    }
+    else if (this.isObstacle(xi,yj-1) && !this.isObstacle(xi,yj+1) && !this.isObstacle(xi-1,yj) && this.isObstacle(xi+1,yj)) {
+      return 4;
+    }
+    else if (!this.isObstacle(xi,yj-1) && this.isObstacle(xi,yj+1) && !this.isObstacle(xi-1,yj) && this.isObstacle(xi+1,yj)) {
+      return 5;
+    }
+    else if (!this.isObstacle(xi,yj-1) && this.isObstacle(xi,yj+1) && this.isObstacle(xi-1,yj) && !this.isObstacle(xi+1,yj)) {
+      return 6;
+    }
+    else if (this.isObstacle(xi,yj-1) && !this.isObstacle(xi,yj+1) && !this.isObstacle(xi-1,yj) && !this.isObstacle(xi+1,yj)) {
+      return 7;
+    }
+    else if (!this.isObstacle(xi,yj-1) && !this.isObstacle(xi,yj+1) && !this.isObstacle(xi-1,yj) && this.isObstacle(xi+1,yj)) {
+      return 8;
+    }
+    else if (!this.isObstacle(xi,yj-1) && this.isObstacle(xi,yj+1) && !this.isObstacle(xi-1,yj) && !this.isObstacle(xi+1,yj)) {
+      return 9;
+    }
+    else if (!this.isObstacle(xi,yj-1) && !this.isObstacle(xi,yj+1) && this.isObstacle(xi-1,yj) && !this.isObstacle(xi+1,yj)) {
+      return 10;
+    }
+    else if (!this.isObstacle(xi,yj-1) && !this.isObstacle(xi,yj+1) && !this.isObstacle(xi-1,yj) && !this.isObstacle(xi+1,yj)) {
+      return 11;
+    }
+    else if (!this.isObstacle(xi,yj-1) || !this.isObstacle(xi,yj+1)) {
+      return 1;
+    }
+    else if (!this.isObstacle(xi-1,yj) || !this.isObstacle(xi+1,yj)) {
+      return 2;
+    }
+    else {
+      return 12;
+    }
+  }
+
   this.isObstacle = function(xi, yj) {
+    if (xi < 0 || yj < 0 || xi >= dimension || yj >= dimension) {
+      return true;
+    }
     var aaa = !(input_array[xi][yj] >= 1 && input_array[xi][yj] <= 3);
     if (input_array[xi][yj] == 5) {
       aaa = false;
