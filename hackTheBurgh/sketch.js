@@ -19,11 +19,16 @@ function won() {
   })
 }
 
+function wonKonami() {
+  window.location.href="https://bobbysworld.online/konami"
+}
+
 var s1 = function (sketch) {
+
   let a = 0;
   visibility = 6;
   offset = 6;
-  dimension = 11;
+  dimension = 11; // 11
   canvas_size = 400
   resolution = canvas_size / (offset * 2 + 1)
   cell_array = []
@@ -38,8 +43,10 @@ var s1 = function (sketch) {
   enemyPositions = [[]]
   curIndex = 0;
   haha = 0;
+  enemySpeed = 40;
 
   setup1 = function() {
+
     haha = 0;
     canvas1 = sketch.createCanvas(canvas_size, canvas_size);
     canvas1.position(0, 125);
@@ -47,7 +54,6 @@ var s1 = function (sketch) {
     generator = new Array_Generator();
     generator.generate(dimension, numEnemies[level]);
     input_array = generator.arr;
-    console.log(input_array);
     player = new Player(canvas_size/2, canvas_size/2, dimension, resolution, sketch);
     player.pos_xx = generator.startX;
     player.pos_yy = generator.startY;
@@ -55,6 +61,32 @@ var s1 = function (sketch) {
     cur_endY = generator.endY;
     player.balance = cur_balance;
     player.pickaxes = cur_pickaxes;
+    if (window.location.pathname == "/bonus") {
+      dimension = 35;
+      input_array = [[]];
+      for (var i = 0; i < dimension; i++) {
+        input_array[i] = [];
+        for (var j = 0; j < dimension; j++) {
+          if (i == 0 || j == 0 || i + 1 == dimension || j + 1 == dimension) {
+            input_array[i][j] = 0;
+          }
+          else if (Math.random() < 0.03 && i + j > 6)  {
+            input_array[i][j] = 6;
+            numEnemies[1]++;
+          }
+          else {
+            input_array[i][j] = 1;
+          }
+        }
+      }
+      input_array[(dimension - 1) / 2][(dimension - 1) / 2] = 6;
+      input_array[dimension - 2][dimension - 2] = 2;
+      player.pos_xx = 1;
+      player.pos_yy = 1;
+      cur_endX = dimension - 2;
+      cur_endY = dimension - 2;
+    }
+    console.log(input_array);
 
     cur_index = 0;
     for (i = 0; i < dimension; i++) {
@@ -71,9 +103,12 @@ var s1 = function (sketch) {
   }
 
   sketch.setup = function() {
+    KONAMI_CODE = [38, 38, 40, 40, 37, 37, 39, 39, 66, 65];
+    KONAMI_CODE_LEVEL = 0;
     song = sketch.loadSound('/bobbys-world/hackTheBurgh/theme.mp3');
     coinSound = sketch.loadSound('/bobbys-world/hackTheBurgh/coin.wav');
     finishSound = sketch.loadSound('/bobbys-world/hackTheBurgh/finish.wav');
+    konami = sketch.loadSound('/bobbys-world/hackTheBurgh/konami.mp3');
     setup1();
   }
 
@@ -107,7 +142,7 @@ var s1 = function (sketch) {
         return;
       }
     }
-    haha = (haha + 1) % 40;
+    haha = (haha + 1) % enemySpeed;
 
     if (haha == 0) {
       for (i = 0; i < numEnemies[level]; i++) {
@@ -160,6 +195,9 @@ var s1 = function (sketch) {
       if (input_array[player.pos_xx][player.pos_yy] == 2) {
         // REACHED ENDPOINT - display image
         if (trig_display_endpoint == 0) {
+          if (window.location.pathname == "/bonus") {
+            wonKonami();
+          }
           if (!mute) {
             finishSound.play();
           }
@@ -232,6 +270,17 @@ var s1 = function (sketch) {
   }
 
   sketch.keyPressed = function() {
+    if (this.sketch.keyCode == KONAMI_CODE[KONAMI_CODE_LEVEL]) {
+      KONAMI_CODE_LEVEL++;
+    }
+    else {
+      KONAMI_CODE_LEVEL = 0;
+    }
+    if (KONAMI_CODE_LEVEL == 10) {
+      player.balance = 9999;
+      player.pickaxes = 9999;
+      enemySpeed = 200;
+    }
     switch(this.sketch.keyCode) {
       case this.sketch.UP_ARROW:   //up
         if (this.onMap || isPaused) {
@@ -334,6 +383,9 @@ var s1 = function (sketch) {
         if (isReady) {
           isReady = false;
           isPaused = false;
+        }
+        if (window.location.pathname == "/bonus") {
+          konami.loop();
         }
         break;
       case 80:
