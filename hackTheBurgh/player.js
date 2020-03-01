@@ -1,8 +1,9 @@
 
 
-function Player(x,y, dimension, resolution){
+function Player(x,y, dimension, resolution, sketch){
 
   // actual pixel position
+  this.sketch = sketch;
   this.pos_x = x;
   this.pos_y = y;
   this.o_pos_x = x;
@@ -24,7 +25,6 @@ function Player(x,y, dimension, resolution){
   this.y2 = this.pos_y-this.big;
   this.x3 = this.pos_x+this.small;
   this.y3 = this.pos_y+this.big;
-  this.figure = triangle(this.x1,this.y1,this.x2,this.y2,this.x3,this.y3);
 
   this.pos_xx = 0;
   this.pos_yy = 0;
@@ -109,9 +109,9 @@ function Player(x,y, dimension, resolution){
       this.y3 = this.pos_y+this.big;
       break;
     }
-    fill(255,50,50,150);
-    triangle(this.x1,this.y1,this.x2,this.y2,this.x3,this.y3);
-    fill(0,0,0);
+    this.sketch.fill(255,50,50,150);
+    this.sketch.triangle(this.x1,this.y1,this.x2,this.y2,this.x3,this.y3);
+    this.sketch.fill(0,0,0);
   }
 
   // displaying the player
