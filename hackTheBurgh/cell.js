@@ -31,6 +31,17 @@ function End(x, y, res, sketch) {
   }
 }
 
+function Enemy(x, y, res, sketch) {
+  this.x = x;
+  this.y = y;
+  this.resolution = res;
+  this.display = function() {
+    sketch.fill(255, 0, 0);
+    sketch.circle(this.x + resolution / 2, this.y + resolution / 2, this.resolution / 5 * 4);
+    sketch.fill(0, 0, 0);
+  }
+}
+
 function Road(x, y, res, sketch, type) {
   this.x = x;
   this.y = y;
@@ -121,7 +132,7 @@ function Road(x, y, res, sketch, type) {
   }
 }
 
-function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start, is_visible, sketch, type){
+function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start, is_visible, sketch, type, is_enemy){
   // initioalize variables
   this.resolution = res;
   this.pos_x = x*this.resolution;
@@ -132,7 +143,8 @@ function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start, is_visi
   this.is_end = is_end;
   this.is_start = is_start;
   this.sketch = sketch;
-  this.is_visible = (is_visible);
+  this.is_visible = is_visible;
+  this.is_enemy = is_enemy;
 
   // console.log(this.pos_x, this.pos_y, this.resolution,this.resolution)
   // make the square
@@ -160,6 +172,9 @@ function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start, is_visi
     } else if (this.has_shop) {
       shop = new Shop(this.pos_x, this.pos_y, this.resolution, sketch);
       shop.display();
+    } else if (this.is_enemy) {
+      enemy = new Enemy(this.pos_x, this.pos_y, this.resolution, sketch);
+      enemy.display();
     }
   }
   this.sketch.stroke(0, 0, 0);
