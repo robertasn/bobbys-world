@@ -46,9 +46,13 @@ function Cell(x,y,res,is_obstacle, has_coin, has_shop, is_end, is_start, is_visi
 
   // console.log(this.pos_x, this.pos_y, this.resolution,this.resolution)
   // make the square
-  if (!this.is_visible) {
+  if (this.is_visible == 0) {
     this.sketch.stroke(0, 0, 0);
     this.sketch.fill(0, 0, 0);
+    this.sketch.rect(this.pos_x,this.pos_y,this.pos_x + this.resolution,this.pos_y + this.resolution);
+  } else if (this.is_visible == 2) {
+    this.sketch.stroke(0, 0, 0);
+    this.sketch.fill(119,136,153);
     this.sketch.rect(this.pos_x,this.pos_y,this.pos_x + this.resolution,this.pos_y + this.resolution);
   } else {
     if(this.is_obstacle){ // obstacle color
