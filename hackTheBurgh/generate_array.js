@@ -45,7 +45,7 @@ function Array_Generator() {
 		}
 
 		this.startX = 1;
-		this.startY = Math.floor(Math.random() * (this.n - 1)) + 1;
+		this.startY = Math.floor(Math.random() * (this.n - 2)) + 1;
 
 		this.frontier[this.frontierSiz++] = [this.startX, this.startY, this.startX, this.startY];
 

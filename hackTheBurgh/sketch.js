@@ -180,7 +180,11 @@ var s3 = function (sketch) {
     sketch.noSmooth();
     img.resize(50, 50);
     sketch.image(img, 10, 10);
-    sketch.text(player.balance, 30, 85);
+    if (player.balance < 10) {
+      sketch.text(player.balance, 30, 85);
+    } else {
+      sketch.text(player.balance, 25, 85);
+    }
   }
 }
 
