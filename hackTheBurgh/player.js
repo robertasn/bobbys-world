@@ -16,7 +16,7 @@ function Player(x,y, dimension, resolution, sketch){
   //movement
   this.vel = 0;
   this.orientation = 4;
-  // trinagle positions default
+  // triangle positions default
   this.small = this.resolution / 4 / 1.5;
   this.big = this.resolution / 3 / 1.5;
   this.x1 = this.pos_x-this.small;
@@ -29,6 +29,12 @@ function Player(x,y, dimension, resolution, sketch){
   this.pos_xx = 0;
   this.pos_yy = 0;
 
+  // coin balance
+  this.balance = 0;
+
+  // pickaxe count
+  this.pickaxes = 0;
+  
   // update movement
   this.update_movement = function(type){
       this.set_oriention(type);

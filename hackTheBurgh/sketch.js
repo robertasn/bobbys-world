@@ -24,6 +24,7 @@ var s1 = function (sketch) {
   onMap = false;
   was_visited = [[]]
   cur_balance = 0;
+  cur_pickaxes = 0;
   dx = [1, -1, 0, 0];
   dy = [0, 0, 1, -1];
 
@@ -42,6 +43,7 @@ var s1 = function (sketch) {
     cur_endX = generator.endX;
     cur_endY = generator.endY;
     player.balance = cur_balance;
+    player.pickaxes = cur_pickaxes;
 
     for (i = 0; i < dimension; i++) {
       was_visited[i] = [];
@@ -89,6 +91,7 @@ var s1 = function (sketch) {
         level++;
         if (level < 6) {
           cur_balance = player.balance;
+          cur_pickaxes = player.pickaxes;
           setup1();
         } else {
           won();
@@ -144,6 +147,12 @@ var s1 = function (sketch) {
         this.player.set_oriention(1);
         if (!isObstacle(this.player.pos_xx, this.player.pos_yy - 1)) {
           this.player.pos_yy--;
+        } else if (this.player.pos_yy > 0) {
+          if (input_array[this.player.pos_xx][this.player.pos_yy - 1] == 4 && player.balance >= 7) {
+            player.balance -= 7;
+            player.pickaxes++;
+            input_array[this.player.pos_xx][this.player.pos_yy - 1] = 0;
+          }
         }
 
         break;//
@@ -154,6 +163,12 @@ var s1 = function (sketch) {
         this.player.set_oriention(2);
         if (!isObstacle(this.player.pos_xx, this.player.pos_yy + 1)) {
           this.player.pos_yy++;
+        } else if (this.player.pos_yy < this.dimension - 1) {
+          if (input_array[this.player.pos_xx][this.player.pos_yy + 1] == 4 && player.balance >= 7) {
+            player.balance -= 7;
+            player.pickaxes++;
+            input_array[this.player.pos_xx][this.player.pos_yy + 1] = 0;
+          }
         }
         break;
       case this.sketch.RIGHT_ARROW:   // right
@@ -163,6 +178,12 @@ var s1 = function (sketch) {
         this.player.set_oriention(3);
         if (!isObstacle(this.player.pos_xx + 1, this.player.pos_yy)) {
           this.player.pos_xx++;
+        } else if (this.player.pos_xx < this.dimension - 1) {
+          if (input_array[this.player.pos_xx + 1][this.player.pos_yy] == 4 && player.balance >= 7) {
+            player.balance -= 7;
+            player.pickaxes++;
+            input_array[this.player.pos_xx + 1][this.player.pos_yy] = 0;
+          }
         }
         break;
       case this.sketch.LEFT_ARROW:   // left
@@ -172,6 +193,12 @@ var s1 = function (sketch) {
         this.player.set_oriention(4);
         if (!isObstacle(this.player.pos_xx - 1, this.player.pos_yy)) {
           this.player.pos_xx--;
+        } else if (this.player.pos_xx > 0) {
+          if (input_array[this.player.pos_xx - 1][this.player.pos_yy] == 4 && player.balance >= 7) {
+            player.balance -= 7;
+            player.pickaxes++;
+            input_array[this.player.pos_xx - 1][this.player.pos_yy] = 0;
+          }
         }
         break;
       case this.sketch.SHIFT:
@@ -188,6 +215,28 @@ var s1 = function (sketch) {
       case this.sketch.CONTROL:
         if (trig_display_endpoint == 1) {
           trig_display_endpoint = 2;
+        }
+        break;
+      case 32: // aka spacebar
+        if (player.pickaxes == 0) {
+          break;
+        }
+
+        adjX = player.pos_xx;
+        adjY = player.pos_yy;
+        if (player.orientation == 2) {
+          adjY++;
+        } else if (player.orientation == 1) {
+          adjY--;
+        } else if (player.orientation == 3) {
+          adjX++;
+        } else {
+          adjX--;
+        }
+        if (adjX > 0 && adjX < this.dimension - 1 && adjY > 0 && adjY < this.dimension - 1 
+          && input_array[adjX][adjY] == 0 || input_array[adjX][adjY] == 4) {
+            input_array[adjX][adjY] = 1;
+          player.pickaxes--;
         }
         break;
     }

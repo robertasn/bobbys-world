@@ -110,8 +110,16 @@ function Array_Generator() {
 			}
 		}
 
-		this.endY = endLocs[Math.floor(Math.random() * cu)];
-
+		if (cu == 0) {
+			for (y = 0; y < this.n; y++) {
+				if (this.cells[this.getID(endX, y)] == 1) {
+					endY = y;
+					break;
+				}
+			}
+		} else {
+			this.endY = endLocs[Math.floor(Math.random() * cu)];
+		}
 		arr = [[]];
 		for (var i = 0; i < this.n; i++) {
 			arr[i] = [];
