@@ -202,7 +202,7 @@ var s4 = function (sketch) {
   }
 }
 
-new p5(s1);
-new p5(s2);
-new p5(s3);
-new p5(s4);
+new p5(s1, 'container');
+new p5(s2, 'container');
+new p5(s3, 'container');
+new p5(s4, 'container');
