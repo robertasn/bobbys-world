@@ -1,13 +1,17 @@
 var level = 1;
 var timer = 0;
-var isPaused = false;
+var isPausedTime = false;
+var isLoading = true;
+var isReady = true;
+var isPaused = true;
+var isGameOver = false;
 var trig_display_endpoint = 0;
 
 
 function won() {
   fetch('https://bobbysworld.online/submit', {
     method: 'POST',
-    body: timer
+    body: timer - 2
   }).then(() => {
     window.location.href="https://bobbysworld.online/scoreboard"
   })
@@ -56,13 +60,35 @@ var s1 = function (sketch) {
     popup_window = new pop_up_window(canvas_size,canvas_size,sketch);
   }
 
+  sketch.preload = function() {
+
+  }
+
+
   sketch.setup = function() {
+    song = sketch.loadSound('/bobbys-world/hackTheBurgh/theme.mp3');
     setup1();
   }
 
 
 
   sketch.draw = function() {
+    if (isGameOver) {
+      paused = true;
+      sketch.background(100);
+      overlay("GAME OVER", 50);
+      return;
+    }
+    if (!isLoading && isReady) {
+      sketch.background(100);
+      overlay("PRESS ENTER TO START", 30);
+      return;
+    }
+    if (!isLoading && isPaused) {
+      sketch.background(100);
+      overlay("PAUSED", 60);
+      return;
+    }
     sketch.background(100);
 
     x = player.pos_xx - offset;
@@ -79,15 +105,15 @@ var s1 = function (sketch) {
         if (trig_display_endpoint == 0) {
           trig_display_endpoint = 1;
         }
-        
+
         if(trig_display_endpoint == 1) {
-          isPaused = true;
+          isPausedTime = true;
           sketch.background(255,215,0,150);
           popup_window.display_text(level);
           return;
         }
 
-        isPaused = false;
+        isPausedTime = false;
         trig_display_endpoint = 0;
         dimension += 4; //change this
         level++;
@@ -137,13 +163,13 @@ var s1 = function (sketch) {
       }
     }
     player.show();
+    isLoading = false;
   }
 
   sketch.keyPressed = function() {
     switch(this.sketch.keyCode) {
       case this.sketch.UP_ARROW:   //up
-        console.log(this.onMap);
-        if (this.onMap) {
+        if (this.onMap || isPaused) {
           break;
         }
         this.player.set_oriention(1);
@@ -159,7 +185,7 @@ var s1 = function (sketch) {
 
         break;//
       case this.sketch.DOWN_ARROW:   // down
-        if (this.onMap) {
+        if (this.onMap || isPaused) {
           break;
         }
         this.player.set_oriention(2);
@@ -174,7 +200,7 @@ var s1 = function (sketch) {
         }
         break;
       case this.sketch.RIGHT_ARROW:   // right
-        if (this.onMap) {
+        if (this.onMap || isPaused) {
           break;
         }
         this.player.set_oriention(3);
@@ -189,7 +215,7 @@ var s1 = function (sketch) {
         }
         break;
       case this.sketch.LEFT_ARROW:   // left
-        if (this.onMap) {
+        if (this.onMap || isPaused) {
           break;
         }
         this.player.set_oriention(4);
@@ -235,13 +261,29 @@ var s1 = function (sketch) {
         } else {
           adjX--;
         }
-        if (adjX > 0 && adjX < this.dimension - 1 && adjY > 0 && adjY < this.dimension - 1 
+        if (adjX > 0 && adjX < this.dimension - 1 && adjY > 0 && adjY < this.dimension - 1
           && input_array[adjX][adjY] == 0 || input_array[adjX][adjY] == 4) {
             input_array[adjX][adjY] = 1;
           player.pickaxes--;
         }
         break;
+      case this.sketch.ENTER:
+        isReady = false;
+        isPaused = false;
+        song.loop();
+        break;
+      case 80:
+        isPaused = !isPaused;
+        break;
     }
+  }
+
+  this.overlay = function(text, size) {
+      sketch.fill(255, 255, 255);
+      sketch.textSize(size);
+      sketch.textAlign(sketch.CENTER, sketch.CENTER);
+      sketch.text(text, canvas_size / 2, canvas_size / 2);
+      sketch.textAlign(sketch.LEFT, sketch.TOP);
   }
 
   this.determineType = function(xi, yj) {
@@ -301,7 +343,7 @@ var s1 = function (sketch) {
   }
 
   this.timer = window.setInterval(function() {
-    if (!isPaused) {
+    if (!isPausedTime && !isPaused) {
       timer++;
     }
   }, 1000)
@@ -318,7 +360,7 @@ var s2 = function (sketch) {
 
   sketch.draw = function() {
     sketch.background(100);
-    loader.display_loader(level);          
+    loader.display_loader(level);
   }
 }
 
@@ -356,8 +398,8 @@ var s3 = function (sketch) {
   }
 
   this.formatTime = function() {
-    var minutes = Math.floor(timer / 60);
-    var seconds = timer % 60;
+    var minutes = Math.floor((timer - 2) / 60);
+    var seconds = (timer - 2) % 60;
     if (minutes < 10) {
       minutes = "0" + minutes;
     }

@@ -30,6 +30,7 @@ function pop_up_window(dimX, dimY,sketch) {
 	this.next_y2 = 25 
 
 	this.display_text = function (type){
+		this.sketch.textSize(12);
 		switch(type) {
 			case 1: 
 				this.sketch.text(this.t1, 10, 10, this.dimX - 10, 30);
