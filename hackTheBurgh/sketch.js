@@ -1,7 +1,7 @@
 var level = 1;
 var timer = 0;
 var isPaused = false;
-var trig_display_endpoint = 0
+var trig_display_endpoint = 0;
 
 function won() {
   fetch('https://bobbysworld.online/submit', {
@@ -78,11 +78,12 @@ var s1 = function (sketch) {
         }
         
         if(trig_display_endpoint == 1) {
-          console.log("LOOP");
+          isPaused = true;
           popup_window.display_text(level);
           return;
         }
 
+        isPaused = false;
         trig_display_endpoint = 0;
         dimension += 4; //change this
         level++;
