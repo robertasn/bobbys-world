@@ -109,7 +109,6 @@ function Array_Generator() {
 				}
 			}
 		}
-
 		if (cu == 0) {
 			for (y = 0; y < this.n; y++) {
 				if (this.cells[this.getID(endX, y)] == 1) {

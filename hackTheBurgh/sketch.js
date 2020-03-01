@@ -3,6 +3,7 @@ var timer = 0;
 var isPaused = false;
 var trig_display_endpoint = 0;
 
+
 function won() {
   fetch('https://bobbysworld.online/submit', {
     method: 'POST',
@@ -81,6 +82,7 @@ var s1 = function (sketch) {
         
         if(trig_display_endpoint == 1) {
           isPaused = true;
+          sketch.background(255,215,0,150);
           popup_window.display_text(level);
           return;
         }
@@ -310,12 +312,13 @@ var s2 = function (sketch) {
     canvas2 = sketch.createCanvas(400, 100);
     canvas2.position(0, 0);
     sketch.background(100);
+    loader = new Loader(level,400,100,sketch)
   }
-
 
 
   sketch.draw = function() {
     sketch.background(100);
+    loader.display_loader(level);          
   }
 }
 
@@ -342,7 +345,6 @@ var s3 = function (sketch) {
     } else {
       sketch.text(player.balance, 25, 85);
     }
-
     img2.resize(50, 50);
     sketch.image(img2, 70, 10);
     sketch.textSize(20);
@@ -368,15 +370,19 @@ var s3 = function (sketch) {
 
 var s4 = function (sketch) {
   sketch.setup = function() {
-    canvas4 = sketch.createCanvas(200, 400);
+    dimX = 400;
+    dimY = 400;
+    canvas4 = sketch.createCanvas(dimX, dimY);
     canvas4.position(425, 125);
     sketch.background(100);
+    informer = new Informer(this.dimX, this.dimY, sketch);
   }
 
 
 
   sketch.draw = function() {
     sketch.background(100);
+    informer.display();
   }
 }
 
