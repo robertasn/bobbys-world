@@ -1,6 +1,7 @@
-var level = 0;
+var level = 1;
 var timer = 0;
 var isPaused = false;
+var trig_display_endpoint = 0
 
 function won() {
   fetch('https://bobbysworld.online/submit', {
@@ -49,6 +50,7 @@ var s1 = function (sketch) {
       }
     }
     was_visited[player.pos_xx][player.pos_yy] = 1;
+    popup_window = new pop_up_window(canvas_size,canvas_size,sketch);
   }
 
   sketch.setup = function() {
@@ -71,9 +73,20 @@ var s1 = function (sketch) {
       }
       if (input_array[player.pos_xx][player.pos_yy] == 2) {
         // REACHED ENDPOINT - display image
-        dimension += 4;
+        if (trig_display_endpoint == 0) {
+          trig_display_endpoint = 1;
+        }
+        
+        if(trig_display_endpoint == 1) {
+          console.log("LOOP");
+          popup_window.display_text(level);
+          return;
+        }
+
+        trig_display_endpoint = 0;
+        dimension += 4; //change this
         level++;
-        if (level < 5) {
+        if (level < 6) {
           cur_balance = player.balance;
           setup1();
         } else {
@@ -170,6 +183,12 @@ var s1 = function (sketch) {
         resolution = canvas_size / (offset * 2 + 1)
         this.player.toggleCenter(resolution);
         onMap = !onMap;
+        break;
+      case this.sketch.CONTROL:
+        if (trig_display_endpoint == 1) {
+          trig_display_endpoint = 2;
+        }
+        break;
     }
   }
 
@@ -185,7 +204,6 @@ var s1 = function (sketch) {
     if (!isPaused) {
       timer++;
     }
-    console.log(timer);
   }, 1000)
 }
 
