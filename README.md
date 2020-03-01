@@ -2,7 +2,8 @@
 
 - This is a hackathon project at the HackTheBurgh 6th edition.
 - The project is a 2D game.
-- Plot:
+
+**Plot:**
 
 *You are a tourist in Edinburgh City. Your aim is to explore the lovely city and admire all of its main landmarks as quick as possible.
 In the meantime, you can collect all the money that's been lying around and avoid the angry chavs. 
@@ -14,7 +15,7 @@ Hope you enjo it !*
 - *bobbys-world/public/bobbys-world/hackTheBurgh/*
 
 
-Participants:
+**Participants:**
 
 - *Ilie Galit*
 - *Robertas Norkus*
