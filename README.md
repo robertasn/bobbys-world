@@ -11,8 +11,8 @@ The boss round might be hard, but my good friend from **KONAMI** said there's a 
 Hope you enjo it !*
 
 Participants:
-
-*- Ilie Galit
+*
+- Ilie Galit
 - Robertas Norkus
 - Justas Zelnia
 - Alexandru Chelba*
