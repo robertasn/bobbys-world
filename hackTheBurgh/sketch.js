@@ -164,16 +164,23 @@ var s2 = function (sketch) {
 }
 
 var s3 = function (sketch) {
+  let img;
   sketch.setup = function() {
     canvas3 = sketch.createCanvas(200, 100);
     canvas3.position(425, 0);
     sketch.background(100);
-  }
 
+    img = sketch.loadImage('https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png');
+    sketch.textSize(20);
+  }
 
 
   sketch.draw = function() {
     sketch.background(100);
+    sketch.noSmooth();
+    img.resize(50, 50);
+    sketch.image(img, 10, 10);
+    sketch.text(player.balance, 30, 85);
   }
 }
 
