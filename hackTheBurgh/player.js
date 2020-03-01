@@ -29,6 +29,10 @@ function Player(x,y, dimension, resolution, sketch){
   this.pos_xx = 0;
   this.pos_yy = 0;
 
+
+  // coin balance
+  this.balance = 0;
+  
   // update movement
   this.update_movement = function(type){
       this.set_oriention(type);

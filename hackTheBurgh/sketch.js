@@ -2,8 +2,8 @@ var level = 0;
 
 var s1 = function (sketch) {
   let a = 0;
-  visibility = 2;
-  offset = 2;
+  visibility = 4;
+  offset = 4;
   dimension = 21;
   canvas_size = 400
   resolution = canvas_size / (offset * 2 + 1)
@@ -11,6 +11,8 @@ var s1 = function (sketch) {
   input_array = []
   onMap = false;
   was_visited = [[]]
+  dx = [1, -1, 0, 0];
+  dy = [0, 0, 1, -1];
 
   sketch.setup = function() {
     canvas1 = sketch.createCanvas(canvas_size, canvas_size);
@@ -43,6 +45,20 @@ var s1 = function (sketch) {
 
     if (!onMap) {
       was_visited[player.pos_xx][player.pos_yy] = 1;
+      if (input_array[player.pos_xx][player.pos_yy] == 3) {
+        input_array[player.pos_xx][player.pos_yy] = 1;
+        player.balance++;
+      }
+
+      for (dir = 0; dir < 4; dir++) {
+        adjX = player.pos_xx + dx[dir];
+        adjY = player.pos_yy + dy[dir];
+        if (adjX >= 0 && adjX < dimension && adjY >= 0 && adjY < dimension) {
+          if (!isObstacle(adjX, adjY) && was_visited[adjX][adjY] == 0) {
+            was_visited[adjX][adjY] = 2;
+          }
+        }
+      }
     }
 
     for (var i = 0; i < offset*2 + 1; i++) {
@@ -57,7 +73,13 @@ var s1 = function (sketch) {
           var has_coin = (input_array[xi][yj] == 3);
           var is_end = (input_array[xi][yj] == 2);
           var is_start = (input_array[xi][yj] == 5);
-          cell_new = Cell(i,j,resolution,this.isObstacle(xi, yj), has_coin, has_shop, is_end, is_start, (!onMap || was_visited[xi][yj]), sketch);
+          var is_visible;
+          if (!onMap) {
+            is_visible = 1;
+          } else {
+            is_visible = was_visited[xi][yj];
+          }
+          cell_new = Cell(i,j,resolution,this.isObstacle(xi, yj), has_coin, has_shop, is_end, is_start, is_visible, sketch);
         }
         cell_array.push(cell_new);
       }
@@ -142,16 +164,23 @@ var s2 = function (sketch) {
 }
 
 var s3 = function (sketch) {
+  let img;
   sketch.setup = function() {
     canvas3 = sketch.createCanvas(200, 100);
     canvas3.position(425, 0);
     sketch.background(100);
-  }
 
+    img = sketch.loadImage('https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png');
+    sketch.textSize(20);
+  }
 
 
   sketch.draw = function() {
     sketch.background(100);
+    sketch.noSmooth();
+    img.resize(50, 50);
+    sketch.image(img, 10, 10);
+    sketch.text(player.balance, 30, 85);
   }
 }
 
