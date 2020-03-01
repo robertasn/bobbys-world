@@ -325,7 +325,7 @@ var s2 = function (sketch) {
 var s3 = function (sketch) {
   let img;
   sketch.setup = function() {
-    canvas3 = sketch.createCanvas(200, 100);
+    canvas3 = sketch.createCanvas(350, 100);
     canvas3.position(425, 0);
     sketch.background(100);
 
@@ -338,20 +338,20 @@ var s3 = function (sketch) {
     sketch.background(100);
     sketch.noSmooth();
     img.resize(50, 50);
-    sketch.image(img, 10, 10);
+    sketch.image(img, 30, 10);
     sketch.textSize(20);
     if (player.balance < 10) {
-      sketch.text(player.balance, 30, 85);
+      sketch.text(player.balance, 50, 85);
     } else {
-      sketch.text(player.balance, 25, 85);
+      sketch.text(player.balance, 45, 85);
     }
     img2.resize(50, 50);
-    sketch.image(img2, 70, 10);
+    sketch.image(img2, 90, 10);
     sketch.textSize(20);
-    sketch.text(player.pickaxes, 90, 85);
+    sketch.text(player.pickaxes, 110, 85);
 
-    sketch.textSize(20);
-    sketch.text(this.formatTime(), 135, 50);
+    sketch.textSize(50);
+    sketch.text(this.formatTime(), 190, 65);
     sketch.fill(255);
   }
 
@@ -370,7 +370,7 @@ var s3 = function (sketch) {
 
 var s4 = function (sketch) {
   sketch.setup = function() {
-    dimX = 400;
+    dimX = 350;
     dimY = 400;
     canvas4 = sketch.createCanvas(dimX, dimY);
     canvas4.position(425, 125);
