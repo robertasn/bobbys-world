@@ -1,4 +1,15 @@
 var level = 0;
+var timer = 0;
+var isPaused = false;
+
+function won() {
+  fetch('https://bobbysworld.online/submit', {
+    method: 'POST',
+    body: timer
+  }).then(() => {
+    window.location.href="https://bobbysworld.online/scoreboard"
+  })
+}
 
 var s1 = function (sketch) {
   let a = 0;
@@ -11,9 +22,10 @@ var s1 = function (sketch) {
   input_array = []
   onMap = false;
   was_visited = [[]]
+  cur_balance = 0;
   dx = [1, -1, 0, 0];
   dy = [0, 0, 1, -1];
-  cur_level = 0;
+
 
   setup1 = function() {
     canvas1 = sketch.createCanvas(canvas_size, canvas_size);
@@ -28,6 +40,7 @@ var s1 = function (sketch) {
     player.pos_yy = generator.startY;
     cur_endX = generator.endX;
     cur_endY = generator.endY;
+    player.balance = cur_balance;
 
     for (i = 0; i < dimension; i++) {
       was_visited[i] = [];
@@ -59,11 +72,13 @@ var s1 = function (sketch) {
       if (input_array[player.pos_xx][player.pos_yy] == 2) {
         // REACHED ENDPOINT - display image
         dimension += 4;
-        cur_level++;
-        if (cur_level < 5) {
+        level++;
+        if (level < 5) {
+          cur_balance = player.balance;
           setup1();
         } else {
-          // TODO - scoreboard, game finishes
+          won();
+          fail;
         }
         return;
       }
@@ -165,6 +180,13 @@ var s1 = function (sketch) {
     }
     return aaa;
   }
+
+  this.timer = window.setInterval(function() {
+    if (!isPaused) {
+      timer++;
+    }
+    console.log(timer);
+  }, 1000)
 }
 
 var s2 = function (sketch) {
@@ -189,7 +211,6 @@ var s3 = function (sketch) {
     sketch.background(100);
 
     img = sketch.loadImage('https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png');
-    sketch.textSize(20);
   }
 
 
@@ -198,11 +219,27 @@ var s3 = function (sketch) {
     sketch.noSmooth();
     img.resize(50, 50);
     sketch.image(img, 10, 10);
+    sketch.textSize(20);
     if (player.balance < 10) {
       sketch.text(player.balance, 30, 85);
     } else {
       sketch.text(player.balance, 25, 85);
     }
+    sketch.textSize(40);
+    sketch.text(this.formatTime(), 80, 65);
+    sketch.fill(255);
+  }
+
+  this.formatTime = function() {
+    var minutes = Math.floor(timer / 60);
+    var seconds = timer % 60;
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    return minutes + ":" + seconds;
   }
 }
 
