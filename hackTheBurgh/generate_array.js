@@ -8,6 +8,8 @@ function Array_Generator() {
 	this.arr = [[]];
 	this.startX = 0;
 	this.startY = 0;
+	this.endX = 0;
+	this.endY = 0;
 
 	this.valid = function(x, y) {
 		if (x >= 1 && x < this.n - 1 && y >= 1 && y < this.n - 1) {
@@ -88,8 +90,8 @@ function Array_Generator() {
 		// 	}
 		// }
 
-		endX = this.n - 2;
-		var endY = -1;
+		this.endX = this.n - 2;
+		this.endY = -1;
 
 		endLocs = [];
 		cu = 0;
@@ -97,7 +99,7 @@ function Array_Generator() {
 			if (this.cells[this.getID(x, y)] == 1) {
 				count = 0;
 				for (dir = 0; dir < 4; dir++) {
-					adjX = endX + this.dx[dir], adjY = y + this.dy[dir];
+					adjX = this.endX + this.dx[dir], adjY = y + this.dy[dir];
 					if (this.cells[this.getID(adjX, adjY)] == 0) {
 						count++;
 					}
@@ -108,7 +110,7 @@ function Array_Generator() {
 			}
 		}
 
-		endY = endLocs[Math.floor(Math.random() * cu)];
+		this.endY = endLocs[Math.floor(Math.random() * cu)];
 
 		arr = [[]];
 		for (var i = 0; i < this.n; i++) {
@@ -118,7 +120,7 @@ function Array_Generator() {
 					arr[i][j] = 0;
 				} else {
 					if (this.cells[this.getID(i, j)] == 1) {
-						if (i == endX && j == endY) {
+						if (i == this.endX && j == this.endY) {
 							arr[i][j] = 2; // ending cell
 						} else if (i == this.startX && j == this.startY) {
 							arr[i][j] = 5;

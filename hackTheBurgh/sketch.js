@@ -4,7 +4,7 @@ var s1 = function (sketch) {
   let a = 0;
   visibility = 4;
   offset = 4;
-  dimension = 21;
+  dimension = 7;
   canvas_size = 400
   resolution = canvas_size / (offset * 2 + 1)
   cell_array = []
@@ -13,8 +13,9 @@ var s1 = function (sketch) {
   was_visited = [[]]
   dx = [1, -1, 0, 0];
   dy = [0, 0, 1, -1];
+  cur_level = 0;
 
-  sketch.setup = function() {
+  setup1 = function() {
     canvas1 = sketch.createCanvas(canvas_size, canvas_size);
     canvas1.position(0, 125);
     sketch.background(100);
@@ -25,6 +26,8 @@ var s1 = function (sketch) {
     player = new Player(canvas_size/2, canvas_size/2, dimension, resolution, sketch);
     player.pos_xx = generator.startX;
     player.pos_yy = generator.startY;
+    cur_endX = generator.endX;
+    cur_endY = generator.endY;
 
     for (i = 0; i < dimension; i++) {
       was_visited[i] = [];
@@ -33,6 +36,10 @@ var s1 = function (sketch) {
       }
     }
     was_visited[player.pos_xx][player.pos_yy] = 1;
+  }
+
+  sketch.setup = function() {
+    setup1();
   }
 
 
@@ -48,6 +55,17 @@ var s1 = function (sketch) {
       if (input_array[player.pos_xx][player.pos_yy] == 3) {
         input_array[player.pos_xx][player.pos_yy] = 1;
         player.balance++;
+      }
+      if (input_array[player.pos_xx][player.pos_yy] == 2) {
+        // REACHED ENDPOINT - display image
+        dimension += 4;
+        cur_level++;
+        if (cur_level < 5) {
+          setup1();
+        } else {
+          // TODO - scoreboard, game finishes
+        }
+        return;
       }
 
       for (dir = 0; dir < 4; dir++) {
