@@ -10,6 +10,10 @@ If you visit all the landmarks, you'll be treated for a special round.
 The boss round might be hard, but my good friend from **KONAMI** said there's a ~~cheaty~~ cheezy way of of passing that round.
 Hope you enjo it !*
 
+**Game File Location:**
+- *bobbys-world/public/bobbys-world/hackTheBurgh/*
+
+
 Participants:
 
 - *Ilie Galit*
