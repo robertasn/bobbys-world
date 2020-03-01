@@ -26,7 +26,7 @@ function pop_up_window(dimX, dimY,sketch) {
 
 	this.next_x1 = this.dimX/2-40
 	this.next_y1 = this.dimY-30
-	this.next_x2 = 80
+	this.next_x2 = 90
 	this.next_y2 = 25 
 
 	this.display_text = function (type){
@@ -42,7 +42,7 @@ function pop_up_window(dimX, dimY,sketch) {
 				this.sketch.rect(this.next_x1,this.next_y1,this.next_x2,this.next_y2);
 				
 				this.sketch.fill(0)
-				this.sketch.text('PRESS CTRL',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
+				this.sketch.text('PRESS ENTER',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
 
 				this.sketch.noFill();
 				break;
@@ -56,7 +56,7 @@ function pop_up_window(dimX, dimY,sketch) {
 				this.sketch.rect(this.next_x1,this.next_y1,this.next_x2,this.next_y2);
 				
 				this.sketch.fill(0)
-				this.sketch.text('PRESS CTRL',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
+				this.sketch.text('PRESS ENTER',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
 
 				this.sketch.noFill();
 				break;
@@ -70,7 +70,7 @@ function pop_up_window(dimX, dimY,sketch) {
 				this.sketch.rect(this.next_x1,this.next_y1,this.next_x2,this.next_y2);
 				
 				this.sketch.fill(0)
-				this.sketch.text('PRESS CTRL',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
+				this.sketch.text('PRESS ENTER',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
 
 				this.sketch.noFill();
 				break;
@@ -84,7 +84,7 @@ function pop_up_window(dimX, dimY,sketch) {
 				this.sketch.rect(this.next_x1,this.next_y1,this.next_x2,this.next_y2);
 				
 				this.sketch.fill(0)
-				this.sketch.text('PRESS CTRL',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
+				this.sketch.text('PRESS ENTER',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
 
 				this.sketch.noFill();
 				break;
@@ -98,7 +98,7 @@ function pop_up_window(dimX, dimY,sketch) {
 				this.sketch.rect(this.next_x1,this.next_y1,this.next_x2,this.next_y2);
 				
 				this.sketch.fill(0)
-				this.sketch.text('PRESS CTRL',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
+				this.sketch.text('PRESS ENTER',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
 
 				this.sketch.noFill();
 				break;
@@ -113,7 +113,7 @@ function pop_up_window(dimX, dimY,sketch) {
 				this.sketch.rect(this.next_x1,this.next_y1,this.next_x2,this.next_y2);
 				
 				this.sketch.fill(0)
-				this.sketch.text('PRESS CTRL',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
+				this.sketch.text('PRESS ENTER',this.next_x1+2,this.next_y1+7,this.next_x2,this.next_y2);
 
 				this.sketch.noFill();
 				break;

@@ -11,6 +11,8 @@ function Informer(dimX,dimY,sketch){
 	this.s[2] = "   - Spacebar - use one pickaxe;"
 	this.s[3] = "   - Go in direction of a shop - Buy a pickaxe for 5 coins;"
 	this.s[4] = "   - Shift key - show the whole map of visited nodes;"
+	this.s[5] = "   - Press M to mute"
+	this.s[6] = "   - Press P to pause"
 
 	this.t[1] = "Important Notes:"
 	this.s[7] = "   - Pickaxe - can be used to break walls in front of you;"
@@ -28,28 +30,30 @@ function Informer(dimX,dimY,sketch){
 	this.s[17] = "   - In the top right corner, it shows the number of coins collected,\n the elapsed time and the number of owned pickaxes."
 	this.s[18] = "   - You are ranked based on time;"
 
+
+
 	this.display = function(){
 		var x = 0;
-		var y = 6;
+		var y = 10;
 		this.sketch.fill(255);
 		this.sketch.text(this.s[18], x, y, x+this.dimX-20, y+20);
 		y+=20;
 		this.sketch.noFill();
 		for(i=0;i<3;i++){
 			var stj, endj;
-			if(i==0) {stj=0; endj=5;}
+			if(i==0) {stj=0; endj=7;}
 			else if(i==1) {stj=7; endj=10;}
 			else {stj=10; endj = 18;}
 			this.sketch.fill(255);
 			for(j=stj;j<endj;j++)
 			{
 				if(j==0){
-					this.sketch.text(this.s[j],x,y,x+this.dimX-20, y+20);
-					y+=20;
+					this.sketch.text(this.s[j],x,y,x+this.dimX-20, y+17);
+					y+=17;
 				} else
 				if(j<16){
-					this.sketch.text(this.s[j],x,y,x+this.dimX-20, y+20);
-					y+=20;
+					this.sketch.text(this.s[j],x,y,x+this.dimX-20, y+17);
+					y+=17;
 				} else 
 				if(j==17){
 					this.sketch.text(this.s[j],x,y,x+this.dimX-20, y+40);

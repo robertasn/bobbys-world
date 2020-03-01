@@ -6,12 +6,14 @@ var isReady = true;
 var isPaused = true;
 var isGameOver = false;
 var trig_display_endpoint = 0;
+var songPlaying = false;
+var mute = false;
 
 
 function won() {
   fetch('https://bobbysworld.online/submit', {
     method: 'POST',
-    body: timer - 2
+    body: timer
   }).then(() => {
     window.location.href="https://bobbysworld.online/scoreboard"
   })
@@ -64,18 +66,14 @@ var s1 = function (sketch) {
         }
       }
     }
-    console.log(cur_index);
     was_visited[player.pos_xx][player.pos_yy] = 1;
     popup_window = new pop_up_window(canvas_size,canvas_size,sketch);
   }
 
-  sketch.preload = function() {
-
-  }
-
-
   sketch.setup = function() {
     song = sketch.loadSound('/bobbys-world/hackTheBurgh/theme.mp3');
+    coinSound = sketch.loadSound('/bobbys-world/hackTheBurgh/coin.wav');
+    finishSound = sketch.loadSound('/bobbys-world/hackTheBurgh/finish.wav');
     setup1();
   }
 
@@ -103,6 +101,12 @@ var s1 = function (sketch) {
     x = player.pos_xx - offset;
     y = player.pos_yy - offset;
 
+    for (i = 0; i < numEnemies[level]; i++) {
+      if (enemyPositions[i][0] == player.pos_xx && enemyPositions[i][1] == player.pos_yy) {
+        isGameOver = true;
+        return;
+      }
+    }
     haha = (haha + 1) % 40;
 
     if (haha == 0) {
@@ -137,7 +141,9 @@ var s1 = function (sketch) {
         }
 
         if (enemyPositions[i][0] == player.pos_xx && enemyPositions[i][1] == player.pos_yy) {
-          // GAMEOVER
+          console.log("ok");
+          isGameOver = true;
+          return;
         }
       }
     }
@@ -146,11 +152,17 @@ var s1 = function (sketch) {
       was_visited[player.pos_xx][player.pos_yy] = 1;
       if (input_array[player.pos_xx][player.pos_yy] == 3) {
         input_array[player.pos_xx][player.pos_yy] = 1;
+        if (!mute) {
+          coinSound.play();
+        }
         player.balance++;
       }
       if (input_array[player.pos_xx][player.pos_yy] == 2) {
         // REACHED ENDPOINT - display image
         if (trig_display_endpoint == 0) {
+          if (!mute) {
+            finishSound.play();
+          }
           trig_display_endpoint = 1;
         }
 
@@ -165,13 +177,17 @@ var s1 = function (sketch) {
         trig_display_endpoint = 0;
         dimension += 4; //change this
         level++;
+        if (level == 5) {
+          songPlaying = true;
+          song.loop();
+        }
         if (level < 6) {
           cur_balance = player.balance;
           cur_pickaxes = player.pickaxes;
           setup1();
         } else {
           won();
-          fail;
+          throw new Error("Something went badly wrong!");
         }
         return;
       }
@@ -289,11 +305,6 @@ var s1 = function (sketch) {
         this.player.toggleCenter(resolution);
         onMap = !onMap;
         break;
-      case this.sketch.CONTROL:
-        if (trig_display_endpoint == 1) {
-          trig_display_endpoint = 2;
-        }
-        break;
       case 32: // aka spacebar
         if (player.pickaxes == 0) {
           break;
@@ -317,13 +328,28 @@ var s1 = function (sketch) {
         }
         break;
       case this.sketch.ENTER:
-        isReady = false;
-        isPaused = false;
-        song.loop();
+        if (trig_display_endpoint == 1) {
+          trig_display_endpoint = 2;
+        }
+        if (isReady) {
+          isReady = false;
+          isPaused = false;
+        }
         break;
       case 80:
         isPaused = !isPaused;
         break;
+      case 77:
+        if (!songPlaying) {
+          return;
+        }
+        if (!mute) {
+          song.pause();
+        }
+        else {
+          song.play();
+        }
+        mute = !mute;
     }
   }
 
@@ -447,8 +473,11 @@ var s3 = function (sketch) {
   }
 
   this.formatTime = function() {
-    var minutes = Math.floor((timer - 2) / 60);
-    var seconds = (timer - 2) % 60;
+    if (isReady) {
+      timer = 0;
+    }
+    var minutes = Math.floor(timer / 60);
+    var seconds = timer % 60;
     if (minutes < 10) {
       minutes = "0" + minutes;
     }
