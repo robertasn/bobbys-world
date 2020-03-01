@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bobby's World</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+        #container {
+            position: fixed;
+            height: 600px;
+            width: 775px;
+            top: 50%;
+            left: 50%;
+            /* bring your own prefixes */
+            transform: translate(-50%, -50%);
+        }
+        #buttons {
+            position: absolute;
+            top: 550px;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+    <script src="bobbys-world/hackTheBurgh/libraries/p5.js"></script>
+    <script src="bobbys-world/hackTheBurgh/libraries/p5.sound.js"></script>
+    <script src="bobbys-world/hackTheBurgh/sketch.js"></script>
+    <script src="bobbys-world/hackTheBurgh/cell.js"></script>
+    <script src="bobbys-world/hackTheBurgh/player.js"></script>
+    <script src="bobbys-world/hackTheBurgh/generate_array.js"></script>
+    <script src="bobbys-world/hackTheBurgh/pop_up.js"></script>
+    <script src="bobbys-world/hackTheBurgh/loader.js"></script>
+    <script src="bobbys-world/hackTheBurgh/info.js"></script>
+    <script src="bobbys-world/hackTheBurgh/overlay_texts.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="buttons">
+            <a href="javascript:window.location.reload(true)" class="btn btn-primary btn-lg">RESTART</a>
+            <a href="{{ path("scoreboard") }}" class="btn btn-primary btn-lg" target="_blank">SCOREBOARD</a>
+            <a class="btn btn-lg btn-primary" href="/logout">LOGOUT</a>
+        </div>
+    </div>
+</body>
+</html>

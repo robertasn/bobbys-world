@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="scoreboard-wrapper">
+    <h1>Bobby's World</h1>
+    <h3>SCOREBOARD</h3>
+    <table class="table table-dark mt-5">
+        <tr>
+            <th>Position</th>
+            <th>Username</th>
+            <th>Time</th>
+        </tr>
+        {% for time in times %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ time.user.username }}</td>
+                <td>{{ time.time|date("H:i:s") }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% if app.user.scoreBoards is not empty %}
+        <a class="btn btn-lg btn-success btn-block" href="{{ path("bonus") }}">BOSS BATTLE</a>
+    {% endif %}
+    <a class="btn btn-sm btn-primary btn-block" href="{{ path('default') }}">PLAY AGAIN</a>
+    <a class="btn btn-sm btn-primary btn-block" href="/logout">LOGOUT</a>
+</div>
+{% endblock %}
