@@ -10,6 +10,7 @@ var s1 = function (sketch) {
   cell_array = []
   input_array = []
   onMap = false;
+  was_visited = [[]]
 
   sketch.setup = function() {
     canvas1 = sketch.createCanvas(canvas_size, canvas_size);
@@ -22,6 +23,14 @@ var s1 = function (sketch) {
     player = new Player(canvas_size/2, canvas_size/2, dimension, resolution, sketch);
     player.pos_xx = generator.startX;
     player.pos_yy = generator.startY;
+
+    for (i = 0; i < dimension; i++) {
+      was_visited[i] = [];
+      for (j = 0; j < dimension; j++) {
+        was_visited[i][j] = 0;
+      }
+    }
+    was_visited[player.pos_xx][player.pos_yy] = 1;
   }
 
 
@@ -31,19 +40,24 @@ var s1 = function (sketch) {
 
     x = player.pos_xx - offset;
     y = player.pos_yy - offset;
+
+    if (!onMap) {
+      was_visited[player.pos_xx][player.pos_yy] = 1;
+    }
+
     for (var i = 0; i < offset*2 + 1; i++) {
       for (var j = 0; j < offset*2 + 1; j++) {
         xi = x + i;
         yj = y + j;
         if ((xi < 0) || (xi >= dimension) || (yj < 0) || (yj >= dimension)) {
-          cell_new = Cell(i,j,resolution,true, false, false, false, false, sketch);
+          cell_new = Cell(i,j,resolution,true, false, false, false, false, !onMap, sketch);
         }
         else {
           var has_shop = (input_array[xi][yj] == 4);
           var has_coin = (input_array[xi][yj] == 3);
           var is_end = (input_array[xi][yj] == 2);
           var is_start = (input_array[xi][yj] == 5);
-          cell_new = Cell(i,j,resolution,this.isObstacle(xi, yj), has_coin, has_shop, is_end, is_start, sketch);
+          cell_new = Cell(i,j,resolution,this.isObstacle(xi, yj), has_coin, has_shop, is_end, is_start, (!onMap || was_visited[xi][yj]), sketch);
         }
         cell_array.push(cell_new);
       }
@@ -91,7 +105,7 @@ var s1 = function (sketch) {
           this.player.pos_xx--;
         }
         break;
-      case this.sketch.TAB:
+      case this.sketch.SHIFT:
         if (onMap) {
           offset = visibility;
         }
