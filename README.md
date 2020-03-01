@@ -1,4 +1,4 @@
-Welcome to BOBBY's World 
+**Welcome to BOBBY's World**
 This is a hackathon project at the HackTheBurgh 6th edition.
 The project is a 2D game.
 Plot:
