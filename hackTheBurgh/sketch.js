@@ -25,16 +25,20 @@ var s1 = function (sketch) {
   was_visited = [[]]
   cur_balance = 0;
   cur_pickaxes = 0;
-  dx = [1, -1, 0, 0];
-  dy = [0, 0, 1, -1];
-
+  dx = [1, 0, -1, 0];
+  dy = [0, 1, 0, -1];
+  numEnemies = [0, 0, 1, 2, 3, 4];
+  enemyPositions = [[]]
+  curIndex = 0;
+  haha = 0;
 
   setup1 = function() {
+    haha = 0;
     canvas1 = sketch.createCanvas(canvas_size, canvas_size);
     canvas1.position(0, 125);
     sketch.background(100);
     generator = new Array_Generator();
-    generator.generate(dimension);
+    generator.generate(dimension, numEnemies[level]);
     input_array = generator.arr;
     console.log(input_array);
     player = new Player(canvas_size/2, canvas_size/2, dimension, resolution, sketch);
@@ -45,12 +49,17 @@ var s1 = function (sketch) {
     player.balance = cur_balance;
     player.pickaxes = cur_pickaxes;
 
+    cur_index = 0;
     for (i = 0; i < dimension; i++) {
       was_visited[i] = [];
       for (j = 0; j < dimension; j++) {
         was_visited[i][j] = 0;
+        if (input_array[i][j] == 6) {
+          enemyPositions[cur_index++] = [i, j];
+        }
       }
     }
+    console.log(cur_index);
     was_visited[player.pos_xx][player.pos_yy] = 1;
     popup_window = new pop_up_window(canvas_size,canvas_size,sketch);
   }
@@ -66,6 +75,45 @@ var s1 = function (sketch) {
 
     x = player.pos_xx - offset;
     y = player.pos_yy - offset;
+
+    haha = (haha + 1) % 40;
+
+    if (haha == 0) {
+      for (i = 0; i < numEnemies[level]; i++) {
+        ex = enemyPositions[i][0]
+        ey = enemyPositions[i][1]
+
+        minimum = 100000;
+        ax = -1, ay = -1
+        for (dir = 0; dir < 4; dir++) {
+          adjX = ex + dx[dir];
+          adjY = ey + dy[dir];
+          if (input_array[adjX][adjY] == 1 || input_array[adjX][adjY] == 3) {
+            if (Math.abs(ex - player.pos_xx) + Math.abs(ey - player.pos_yy) > 10) {
+              input_array[ex][ey] = input_array[adjX][adjY];
+              input_array[adjX][adjY] = 6;
+              enemyPositions[i] = [adjX, adjY]
+              break;
+            } 
+            distance = Math.abs(player.pos_xx - adjX) + Math.abs(player.pos_yy - adjY);
+            if (distance < minimum) {
+              minimum = distance;
+              ax = adjX;
+              ay = adjY;
+            }
+          }
+        }
+        if (ax != -1) {
+          input_array[ex][ey] = input_array[ax][ay];
+          input_array[ax][ay] = 6;
+          enemyPositions[i] = [ax, ay]
+        }
+
+        if (enemyPositions[i][0] == player.pos_xx && enemyPositions[i][1] == player.pos_yy) {
+          // GAMEOVER
+        }
+      }
+    }
 
     if (!onMap) {
       was_visited[player.pos_xx][player.pos_yy] = 1;
@@ -124,12 +172,13 @@ var s1 = function (sketch) {
           var is_end = (input_array[xi][yj] == 2);
           var is_start = (input_array[xi][yj] == 5);
           var is_visible;
+          var is_enemy = (input_array[xi][yj] == 6);
           if (!onMap) {
             is_visible = 1;
           } else {
             is_visible = was_visited[xi][yj];
           }
-          cell_new = Cell(i,j,resolution,this.isObstacle(xi, yj), has_coin, has_shop, is_end, is_start, is_visible, sketch, this.determineType(xi, yj));
+          cell_new = Cell(i,j,resolution,this.isObstacle(xi, yj), has_coin, has_shop, is_end, is_start, is_visible, sketch, this.determineType(xi, yj), is_enemy);
         }
         cell_array.push(cell_new);
       }
@@ -292,7 +341,7 @@ var s1 = function (sketch) {
       return true;
     }
     var aaa = !(input_array[xi][yj] >= 1 && input_array[xi][yj] <= 3);
-    if (input_array[xi][yj] == 5) {
+    if (input_array[xi][yj] == 5 || input_array[xi][yj] == 6) {
       aaa = false;
     }
     return aaa;

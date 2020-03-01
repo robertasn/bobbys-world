@@ -38,7 +38,8 @@ function Array_Generator() {
 		}
 	}
 
-	this.generate = function(siz) {
+	this.generate = function(siz, enemyCnt) {
+		// console.log(enemyCnt);
 		this.n = siz;
 		for (var i = 0; i < this.n; i++) {
 			for (var j = 0; j < this.n; j++) {
@@ -120,10 +121,45 @@ function Array_Generator() {
 		} else {
 			this.endY = endLocs[Math.floor(Math.random() * cu)];
 		}
+
+		locs = [[]];
+		cur_id = 0;
+		for (x = Math.floor(this.n / 2 + 1); x < this.n - 1; x++) {
+			for (y = 1; y < this.n - 1; y++) {
+				if (this.cells[this.getID(x, y)] == 1 && !(x == this.endX && y == this.endY)) {
+					locs[cur_id++] = [x, y];
+				}
+			}
+		}
+
 		arr = [[]];
+		for (i = 0; i < this.n; i++) {
+			arr[i] = []
+			for (j = 0; j < this.n; j++) {
+				arr[i][j] = 0;
+			}
+		}
+
+		console.log(enemyCnt, cur_id);
+		while (enemyCnt > 0 && cur_id > 0) {
+			// console.log("asjfasdjf")
+			index = Math.floor(Math.random() * cur_id);
+			x = locs[index][0];
+			y = locs[index][1];
+
+			locs[index] = locs[cur_id - 1];
+			cur_id--;
+			enemyCnt--;
+
+			arr[x][y] = 6;
+			// console.log("haha")
+		}
+
 		for (var i = 0; i < this.n; i++) {
-			arr[i] = [];
 			for (var j = 0; j < this.n; j++) {
+				if (arr[i][j] == 6) {
+					continue;
+				}
 				if (i == 0 || i == this.n - 1 || j == 0 || j == this.n - 1) {
 					arr[i][j] = 0;
 				} else {
@@ -159,3 +195,4 @@ function Array_Generator() {
 // 3 - coin cell
 // 4 - shop cell
 // 5 - start cell
+// 6 - enemy cell
