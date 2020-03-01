@@ -148,8 +148,8 @@ var s1 = function (sketch) {
         if (!isObstacle(this.player.pos_xx, this.player.pos_yy - 1)) {
           this.player.pos_yy--;
         } else if (this.player.pos_yy > 0) {
-          if (input_array[this.player.pos_xx][this.player.pos_yy - 1] == 4 && player.balance >= 7) {
-            player.balance -= 7;
+          if (input_array[this.player.pos_xx][this.player.pos_yy - 1] == 4 && player.balance >= 5) {
+            player.balance -= 5;
             player.pickaxes++;
             input_array[this.player.pos_xx][this.player.pos_yy - 1] = 0;
           }
@@ -164,8 +164,8 @@ var s1 = function (sketch) {
         if (!isObstacle(this.player.pos_xx, this.player.pos_yy + 1)) {
           this.player.pos_yy++;
         } else if (this.player.pos_yy < this.dimension - 1) {
-          if (input_array[this.player.pos_xx][this.player.pos_yy + 1] == 4 && player.balance >= 7) {
-            player.balance -= 7;
+          if (input_array[this.player.pos_xx][this.player.pos_yy + 1] == 4 && player.balance >= 5) {
+            player.balance -= 5;
             player.pickaxes++;
             input_array[this.player.pos_xx][this.player.pos_yy + 1] = 0;
           }
@@ -179,8 +179,8 @@ var s1 = function (sketch) {
         if (!isObstacle(this.player.pos_xx + 1, this.player.pos_yy)) {
           this.player.pos_xx++;
         } else if (this.player.pos_xx < this.dimension - 1) {
-          if (input_array[this.player.pos_xx + 1][this.player.pos_yy] == 4 && player.balance >= 7) {
-            player.balance -= 7;
+          if (input_array[this.player.pos_xx + 1][this.player.pos_yy] == 4 && player.balance >= 5) {
+            player.balance -= 5;
             player.pickaxes++;
             input_array[this.player.pos_xx + 1][this.player.pos_yy] = 0;
           }
@@ -194,8 +194,8 @@ var s1 = function (sketch) {
         if (!isObstacle(this.player.pos_xx - 1, this.player.pos_yy)) {
           this.player.pos_xx--;
         } else if (this.player.pos_xx > 0) {
-          if (input_array[this.player.pos_xx - 1][this.player.pos_yy] == 4 && player.balance >= 7) {
-            player.balance -= 7;
+          if (input_array[this.player.pos_xx - 1][this.player.pos_yy] == 4 && player.balance >= 5) {
+            player.balance -= 5;
             player.pickaxes++;
             input_array[this.player.pos_xx - 1][this.player.pos_yy] = 0;
           }
@@ -279,6 +279,7 @@ var s3 = function (sketch) {
     sketch.background(100);
 
     img = sketch.loadImage('https://upload.wikimedia.org/wikipedia/en/d/d0/Dogecoin_Logo.png');
+    img2 = sketch.loadImage('https://i7.pngguru.com/preview/610/84/854/minecraft-pocket-edition-pickaxe-iron-tool-minecraft.jpg');
   }
 
 
@@ -293,8 +294,14 @@ var s3 = function (sketch) {
     } else {
       sketch.text(player.balance, 25, 85);
     }
-    sketch.textSize(40);
-    sketch.text(this.formatTime(), 80, 65);
+
+    img2.resize(50, 50);
+    sketch.image(img2, 70, 10);
+    sketch.textSize(20);
+    sketch.text(player.pickaxes, 90, 85);
+
+    sketch.textSize(20);
+    sketch.text(this.formatTime(), 135, 50);
     sketch.fill(255);
   }
 
